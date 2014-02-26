@@ -19,6 +19,7 @@ import t3.core.Company;
 import t3.core.Device;
 import t3.core.DeviceList;
 import t3.core.IoT_Thing;
+import t3.core.RegisterThing;
 import t3.core.ThingInformation;
 import t3.repository.Models;
 import t3.repository.Queries;
@@ -83,11 +84,20 @@ public ThingResource(){
   
   
   @GET
-  @Path("/inference")
-  public Response testInfernece(){
+  @Path("/getresource/{prefix}/{resource}")
+  public Response testInfernece(@PathParam("prefix") String prefix , @PathParam("resource") String resource){
+	 String t3= "http://t3.abdn.ac.uk/ontologies/t3.owl#";
+	 String iota="http://t3.abdn.ac.uk/ontologies/iota.owl#"; 
+	 System.out.println("From request:" +resource);
 	 
-		Queries.inferCapabilities("testuser");
-		Queries.queryCapabilities("MD5Hash");
+	 if(prefix.equals("1")){
+	 RegisterThing.test(t3,resource);}
+	 else{
+		 RegisterThing.test(iota, resource);
+	 
+	 }
+	//	Queries.inferCapabilities("testuser");
+	//	Queries.queryCapabilities("MD5Hash");
 	  return Response.accepted("The inferences were infered").build();
   }
   @GET
@@ -106,6 +116,11 @@ public ThingResource(){
 	  
 	  
   }
+  
+  
+
+  
+  
 
   
 }
