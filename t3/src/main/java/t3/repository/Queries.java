@@ -156,8 +156,7 @@ public static Company getCompanyProfile(String companyName){
 			"OPTIONAL{?company foaf:mbox ?mail } ."+
 			"OPTIONAL{?company foaf:logo ?logo} ."+
 			"OPTIONAL{?company foaf:homepage ?url } ."+
-			"OPTIONAL{?company ns:hasTelephone ?phone } ."+
-			"OPTIONAL{?phone ns:value ?telephone } ."+
+			"OPTIONAL{?company foaf:phone ?telephone } ."+
 			"OPTIONAL{?company ns:hasAddress ?address} ."+
 			"OPTIONAL{?address ns:locality ?city} ."+
 			"OPTIONAL{?address ns:postal-code ?postcode} ."+
@@ -171,8 +170,9 @@ public static Company getCompanyProfile(String companyName){
 	
 	if(rs.hasNext()){
 		QuerySolution solution=rs.next();
-		
+		if(solution.get("mail")!=null){
 		c.setEmail(solution.get("mail").asResource().getURI());
+		}
 		c.setLogo(solution.get("logo").asResource().getURI());
 		c.setName(companyName);
 		c.setUrl(solution.get("url").asResource().getURI());
