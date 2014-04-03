@@ -63,7 +63,19 @@ UserConnection conn=UserConnection.getDB();
 		
 	}
 	
-	
+	@GET
+	@Path("/decline/{device}/{iotdevice}")
+	public Response decline(@PathParam("device") String device, @PathParam("iotdevice") String iotDevice){
+		try{
+			conn.decline(device, iotDevice);
+			return Response.status(Response.Status.CREATED).build();
+			}
+		catch(Exception e){
+			e.printStackTrace();
+			return Response.status(Response.Status.ACCEPTED).build();
+		}
+		
+	}
 	
 	@GET
 	@Path("/checknick/{device}/{nickname}")

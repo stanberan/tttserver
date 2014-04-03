@@ -38,7 +38,8 @@ public ThingResource(){
   @Path("{id}/{user}/information")
   @Produces({MediaType.APPLICATION_JSON })
   public ThingInformation getThing(@PathParam("id") String id, @PathParam("user") String user,@QueryParam("busstop") String busstop) {
-
+	  // if lookup is successful then get from hashtable
+	  // else perform the op and put to hashtable
 	  String iotid=id;
 	  if(busstop!=null && busstop.equals("1")){
 		//  iotid="MD5Hash";
@@ -71,29 +72,21 @@ public ThingResource(){
   }
   
   
-  @GET
-  @Path("{id}/exist")
-  @Produces({MediaType.APPLICATION_JSON})
-  public Response exist(@PathParam("id") String id){
-	if(true){
-		return Response.ok(true).build();
-	}
-	return Response.status(Response.Status.NOT_FOUND).build();
-	    
-  }
+  
   
   
   @GET
   @Path("/getresource/{prefix}/{resource}")
   public Response testInfernece(@PathParam("prefix") String prefix , @PathParam("resource") String resource){
 	 String t3= "http://t3.abdn.ac.uk/ontologies/t3.owl#";
-	 String iota="http://t3.abdn.ac.uk/ontologies/iota.owl#"; 
+	 String iota="http://t3.abdn.ac.uk/ontologies/iota.owl#";
+	 String instance="http://www.w3.org/ns/prov#";
 	 System.out.println("From request:" +resource);
 	 
 	 if(prefix.equals("1")){
 	 RegisterThing.test(t3,resource);}
 	 else{
-		 RegisterThing.test(iota, resource);
+		 RegisterThing.test(instance, resource);
 	 
 	 }
 	//	Queries.inferCapabilities("testuser");
@@ -112,8 +105,15 @@ public ThingResource(){
 		
 	}
 	 return dev;
-	
-	  
+  }
+
+	 @GET
+	  @Path("/infer")
+	  public String infer(){
+		
+		 Queries.inferCapabilities("Testing inferencing");
+		 return "Done";
+		 
 	  
   }
   

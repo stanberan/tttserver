@@ -277,19 +277,35 @@ public int removeDevice(String device, String iotdevice){
 			
 	}
 	
+	public boolean decline(String device, String iotDevice)throws Exception{
+		Timestamp ts=new Timestamp(new Date().getTime());
+		if(conn.isClosed()){
+			conn=DriverManager.getConnection(Configuration.url+Configuration.dbName,Configuration.userName,Configuration.password);
+		}
+		
+			PreparedStatement pStatement=conn.prepareStatement("INSERT into declined values(?,?,?)");
+			pStatement.setString(1,device);
+			pStatement.setString(2, iotDevice);
+			pStatement.setTimestamp(3, ts);
+			int i= pStatement.executeUpdate();
+			if(i>0){
+				return true;
+			}
+			else{
+				return false;
+			}
+	
+		}
+		
+		
+		
 	
 	public static void main(String[] args){
-		UserConnection connection=new UserConnection();
-		System.out.println(connection.userExist("s.beran@abdn.ac.uk"));
-	//	connection.registerUser("2h2j3h42j34", "s.beran@abdn.ac.uk", "Stanislav Beran");
-		User u=connection.getUser("s.beran@abdn.ac.uk");
-		System.out.println(u.getEmail()+u.getId()+u.getName()+u.getPassword());
-		try {
-			connection.registerAccept("stanDev","MD5Hash","nick");
-		System.out.println(	connection.accepted("stanDev", "md3"));
-		System.out.println(connection.accepted("stanDev", "MD5Hash"));
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
+UserConnection connection=UserConnection.getDB();
+		try{
+		connection.decline("Device","IoT device");
+		}
+		catch(Exception e){
 			e.printStackTrace();
 		}
 	}

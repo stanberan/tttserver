@@ -67,7 +67,7 @@ public class Models{
 		//tttOntModel.write(System.out,"N3");
 		System.out.println("THIRD PRINT");
 		// Register locally defined functions
-		SPINModuleRegistry.get().registerAll(instanceModel, null);
+		SPINModuleRegistry.get().registerAll(tttOntModel, null);
 		System.out.println("This is a new file!!!");
 		}
 		// Run all inferences		
