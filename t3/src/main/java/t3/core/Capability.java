@@ -3,7 +3,7 @@ package t3.core;
 
 
 public class Capability {
-	String descriptionOfCapability="Personal Data Consumption";
+	String descriptionOfCapability="Personal Data Consumption"; //TODO pull from REPO
 	String purpose="Purpose was not find in provenance";
 	String consumer="Consumer origin not found in provenance";
 	String consumerURL="Consumer have not published URL";

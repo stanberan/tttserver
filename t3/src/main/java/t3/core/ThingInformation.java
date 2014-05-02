@@ -17,7 +17,16 @@ public class ThingInformation {
 	String deviceDescription="Maker has not specified description for this device .";
 	String manufacturerLogo;
 	String ownerLogo;
+	String busURL;
      
+	public String getBusURL() {
+		return busURL;
+	}
+
+
+	public void setBusURL(String busURL) {
+		this.busURL = busURL;
+	}
 	ArrayList<Capability> capabilities=null;
 	ArrayList<Feature> features=null;
 	

@@ -43,15 +43,23 @@ public static boolean exists(String id){
 		return false;
 	}
 
-public static boolean registerBustStopTag(String identifier){
+public static boolean registerBustStopTag(String identifier,String busURL){
 	Resource tag = Repositories.getT3Instance().createResource(Models.INSTANCE_NS+identifier);
 	Property identifies = ResourceFactory.createProperty(Models.IOTA_NS, "identifies");
 	Resource md5= Repositories.getT3Instance().createResource(Models.INSTANCE_NS+"MD5Hash");
+	//beta 2.2
+	Resource busUrl= Repositories.getT3Instance().createResource(busURL);
+	Property hasURL= ResourceFactory.createProperty(Models.TTT_NS, "hasURL");
+	
+	
 	tag.addProperty(identifies, md5);
+	tag.addProperty(hasURL, busUrl);
 	
 	Resource tag1 = Models.instanceModel.createResource(Models.INSTANCE_NS+identifier);
 	Resource md51= Models.instanceModel.createResource(Models.INSTANCE_NS+"MD5Hash");
+	Resource busUrl1=Models.instanceModel.createResource(busURL);
 	tag1.addProperty(identifies, md51);
+	tag1.addProperty(hasURL, busUrl1);
 	
 	/*
 	String queryString="prefix ttt:<http://t3.abdn.ac.uk/ontologies/t3.owl#> "
@@ -82,8 +90,9 @@ public static ThingInformation getDeviceInformation(String id,String user){
 					+ "prefix rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
 					+ "prefix xsd:<http://www.w3.org/2000/10/XMLSchema#>"
 					+ "prefix foaf:<http://xmlns.com/foaf/0.1/>  "
-					+ "SELECT ?deviceDescription ?deviceTypeDescription ?thingName ?manufacturerLogo ?ownerLogo ?pictureURL ?manufacturerName ?manufacturerURL ?ownerName ?ownerURL  "
+					+ "SELECT ?busURL ?deviceDescription ?deviceTypeDescription ?thingName ?manufacturerLogo ?ownerLogo ?pictureURL ?manufacturerName ?manufacturerURL ?ownerName ?ownerURL  "
 					+ "WHERE { ?tag iota:identifies ?device . "+
+					"OPTIONAL{?tag ttt:hasURL ?busURL} ."+
 					"OPTIONAL{?device ttt:manufacturer ?manufacturer} ."+
 					"OPTIONAL{?device ttt:owner ?owner }."+
 					"OPTIONAL{?manufacturer foaf:name ?manufacturerName }."+
@@ -118,6 +127,7 @@ public static ThingInformation getDeviceInformation(String id,String user){
 		thi.setManufacturerLogo(next.get("manufacturerLogo").asResource().getURI());
 		thi.setPicture(next.get("pictureURL").asLiteral().getString());
 		thi.setThingName(next.get("thingName").asLiteral().getString());
+		thi.setBusURL(next.get("busURL").asResource().getURI());
 		//INFER CAPABILITIES AND QUALITIES for ALL DEVICES
 		inferCapabilities(user);
 		thi.setCapabilities(queryCapabilities(id));

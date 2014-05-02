@@ -37,13 +37,13 @@ public ThingResource(){
   @GET
   @Path("{id}/{user}/information")
   @Produces({MediaType.APPLICATION_JSON })
-  public ThingInformation getThing(@PathParam("id") String id, @PathParam("user") String user,@QueryParam("busstop") String busstop) {
+  public ThingInformation getThing(@PathParam("id") String id, @PathParam("user") String user,@QueryParam("busstop") String busstop, @QueryParam("busurl") String busUrl) {
 	  // if lookup is successful then get from hashtable
 	  // else perform the op and put to hashtable
 	  String iotid=id;
 	  if(busstop!=null && busstop.equals("1")){
 		//  iotid="MD5Hash";
-		  Queries.registerBustStopTag(id);
+		  Queries.registerBustStopTag(id,busUrl);
 	  }
 	  if(!Queries.exists(iotid)){
 	      throw new RuntimeException("Get: Not found with " + id +  " not found");
