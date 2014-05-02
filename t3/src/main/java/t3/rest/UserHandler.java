@@ -14,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlElement;
 
+import t3.repository.Queries;
 import t3.repository.UserConnection;
 
 
@@ -26,12 +27,13 @@ UserConnection conn=UserConnection.getDB();
 	@GET
 	  @Path("/accepted/{device}/{iotdevice}")
 	@Produces({MediaType.APPLICATION_JSON})
-	  public Response accepted(@PathParam("device") String device, @PathParam("iotdevice") String iotDevice, @QueryParam("busstop") String busstop){
+	  public Response accepted(@PathParam("device") String device, @PathParam("iotdevice") String iotDevice, @QueryParam("busurl") String busURL){
 		
 		try {
 			//for stats!!
 			conn.registerScan(device,iotDevice,new Date());
 			//
+			Queries.registerBustStopTag(iotDevice, busURL);
 			String time=conn.accepted(device, iotDevice);
 			if(time!=null){
 				
