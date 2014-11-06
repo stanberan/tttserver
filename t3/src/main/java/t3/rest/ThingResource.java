@@ -15,6 +15,8 @@ import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 
+import org.json.JSONObject;
+
 import t3.core.Company;
 import t3.core.Device;
 import t3.core.DeviceList;
@@ -29,10 +31,36 @@ import t3.repository.UserConnection;
 @Path("/thing")
 public class ThingResource {
 	
+String s="{'uri':'http://192.168.0.1/index.php','capabilities':[{'consumer':'dot.rural Digital Economy Hub','consumerLogo':'http://t3.abdn.ac.uk/images/dotrural.png','consumerURL':'http://www.dotrural.ac.uk/dotrural/','consumes':'Environment temperature and humidity','descriptionOfCapability':'Personal Data Collection','purpose':'The data is used for research purposes','URI':null},{'consumer':'dot.rural Digital Economy Hub','consumerLogo':'http://t3.abdn.ac.uk/images/dotrural.png','consumerURL':'http://www.dotrural.ac.uk/dotrural/','consumes':'Pictures','descriptionOfCapability':'Personal Data Collection','purpose':'The data is used for research purposes','URI':null},{'consumer':'dot.rural Digital Economy Hub','consumerLogo':'http://t3.abdn.ac.uk/images/dotrural.png','consumerURL':'http://www.dotrural.ac.uk/dotrural/','consumes':'Location','descriptionOfCapability':'Personal Data Collection','purpose':'The data is used for research purposes','URI':null}],'deviceDescription':'Smart Toy with embedded sensors.','deviceType':'Smart Toy','manufacturer':'dot.rural Digital Economy Hub ','manufacturerLogo':'http://t3.abdn.ac.uk/images/dotrural.png','manufacturerURL':'http://www.dotrural.ac.uk/dotrural/','owner':'dot.rural Digital Economy Hub ','ownerLogo':'http://t3.abdn.ac.uk/images/dotrural.png','ownerURL':'http://www.dotrural.ac.uk/dotrural','picture':'http://t3.abdn.ac.uk/images/h00t.jpeg','thingName':'H00T'}";
+	
+
+String sim="{'uri':'http://t3.abdn.ac.uk:8080/t3v2/1/device/simbbox001/prov','capabilities':[{'consumer':'SimBBox Insurance Ltd','consumerLogo':'http://t3.abdn.ac.uk/image/simbox.png','consumerURL':'http://www.t3.abdn.ac.uk/simbbox','consumes':'Environment temperature','descriptionOfCapability':'Personal Data Collection','purpose':'The data is used to calculate your premium','URI':null},{'consumer':'SimBBox Insurance Ltd','consumerLogo':'http://t3.abdn.ac.uk/image/simbox.png','consumerURL':'http://www.t3.abdn.ac.uk/simbbox','consumes':'GPS location','descriptionOfCapability':'Personal Data Collection','purpose':'The data is used to check driving patterns','URI':null},{'consumer':'SimBBox Insurance Ltd','consumerLogo':'http://t3.abdn.ac.uk/image/simbox.png','consumerURL':'http://www.t3.abdn.ac.uk/simbbox','consumes':'Accelerometer data','descriptionOfCapability':'Personal Data Collection','purpose':'The data is used to check for reckless driving','URI':null},{'consumer':'SimBBox Insurance Ltd','consumerLogo':'http://t3.abdn.ac.uk/image/simbox.png','consumerURL':'http://www.t3.abdn.ac.uk/simbbox','consumes':'Overall distance travelled','descriptionOfCapability':'Personal Data Generation','purpose':'The data is used to calculate your premium','URI':null}],'deviceDescription':'This device is used to capture driving behaviour of drivers in order to tailor their insurance premiums.','deviceType':'Telemetry Box','manufacturer':'Sony Europe Limited ','manufacturerLogo':'http://www.sony.co.uk/pro/assets/images/sony_logo_print.gif','manufacturerURL':'http://www.sony.co.uk','owner':'SimBBox Insurance Ltd','ownerLogo':'http://t3.abdn.ac.uk/images/dotrural.png','ownerURL':'http://www.t3.abdn.ac.uk/simbbox/','picture':'http://t3.abdn.ac.uk/image/simbox.png','thingName':'SimBBox Telemetry Tracking Device'}";
+
 public ThingResource(){
 }
-
+public static void main(String[] args){
+	ThingResource t=new ThingResource();
+	JSONObject j=new JSONObject(t.s);
+	System.out.println(j.getString("uri"));
+	
+	
+}
 //implement Error 
+
+@GET
+@Path("{device}/static/information")
+public Response getStatic(@PathParam("device") String device){
+
+	if(device.equals("h00t")){
+		return Response.ok().entity(s).build();
+	}
+	else if(device.equals("simbbox001")){
+		return Response.ok().entity(sim).build();
+	}
+	return Response.noContent().build();
+
+}
+
 
   @GET
   @Path("{id}/{user}/information")

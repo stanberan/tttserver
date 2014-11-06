@@ -33,7 +33,10 @@ UserConnection conn=UserConnection.getDB();
 			//for stats!!
 			conn.registerScan(device,iotDevice,new Date());
 			//
+			if(busURL!=null && busURL.contains("deps.at")){
 			Queries.registerBustStopTag(iotDevice, busURL);
+			}
+			
 			String time=conn.accepted(device, iotDevice);
 			if(time!=null){
 				

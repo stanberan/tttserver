@@ -160,7 +160,7 @@ public static Company getCompanyProfile(String companyName){
 			+ "prefix iota:<http://t3.abdn.ac.uk/ontologies/iota.owl#>"
 			+ "prefix ns:<http://www.w3.org/2006/vcard/ns#>"
 			+ "prefix foaf:<http://xmlns.com/foaf/0.1/>  "
-			+ "SELECT ?mail ?company ?url ?logo ?telephone ?streetAddress ?postcode ?city  "
+			+ "SELECT ?mail ?company ?url ?logo ?telephone ?address ?streetAddress ?postcode ?city  "
 			+ "WHERE {"
 			+ " ?company foaf:name ?name ." +
 			"OPTIONAL{?company foaf:mbox ?mail } ."+
@@ -187,13 +187,22 @@ public static Company getCompanyProfile(String companyName){
 		c.setName(companyName);
 		c.setUrl(solution.get("url").asResource().getURI());
 		c.setResourceIdentifier(solution.get("company").asResource().getURI());
-		c.setTelNumber(solution.get("telephone").asLiteral().getString());
-		
+		if(!solution.get("telephone").isLiteral()){
+		c.setTelNumber(solution.get("telephone").asNode().getURI());}
+		else{
+			c.setTelNumber(solution.get("telephone").asLiteral().getString());
+		}
+		if(solution.contains("streetAddress")){
 		String address="";
 		address+=solution.get("streetAddress").asLiteral().getString();
 		address+="\n"+solution.get("city").asLiteral().getString();
 		address+="\n"+solution.get("postcode").asLiteral().getString();
 		c.setAddress(address);
+		}
+		else{
+			if(solution.contains("address")){
+			c.setAddress(solution.get("address").asLiteral().getString());}
+		}
 		
 		
 	}
@@ -204,6 +213,16 @@ public static Company getCompanyProfile(String companyName){
 
 
 public static String getDevicePictureURL(String id){
+	if(id.contains("h00t")){
+		
+		return "http://t3.abdn.ac.uk/images/h00t.jpeg";
+		
+		
+	}
+	else if(id.contains("simbbox")){
+		return "http://t3.abdn.ac.uk/image/simbox.png";
+	}
+	else{
 	String queryString="prefix instance:<http://t3.abdn.ac.uk/ontologies/instancedata.owl#>"
 			+ "prefix ttt:<http://t3.abdn.ac.uk/ontologies/t3.owl#> "
 			+ "prefix iota:<http://t3.abdn.ac.uk/ontologies/iota.owl#>"
@@ -221,6 +240,7 @@ public static String getDevicePictureURL(String id){
 			return rs.next().get("pictureURL").asLiteral().getString();
 		}
 		return "placeholder";
+	}
 }
 
 

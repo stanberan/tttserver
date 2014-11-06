@@ -32,9 +32,7 @@ public class Models{
     static Model inferencesModel=null;
     static Model sesameModel=null; 
 	//OntModel provenanceModel = ModelFactory.createOntologyModel( OntModelSpec.OWL_MEM, "http://www.w3.org/ns/prov");
-	public Models(){
-	
-}
+
 
 	public static void initialize(){
 		System.setProperty("http.proxyHost", "proxy.abdn.ac.uk");
